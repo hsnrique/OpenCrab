@@ -10,6 +10,12 @@ pub struct UrlReaderTool {
     client: Client,
 }
 
+impl Default for UrlReaderTool {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl UrlReaderTool {
     pub fn new() -> Self {
         Self {

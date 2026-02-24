@@ -113,11 +113,9 @@ fn split_message(text: &str, max_len: usize) -> Vec<String> {
     let mut current = String::new();
 
     for line in text.lines() {
-        if current.len() + line.len() + 1 > max_len {
-            if !current.is_empty() {
-                chunks.push(current.clone());
-                current.clear();
-            }
+        if current.len() + line.len() + 1 > max_len && !current.is_empty() {
+            chunks.push(current.clone());
+            current.clear();
         }
         if !current.is_empty() {
             current.push('\n');

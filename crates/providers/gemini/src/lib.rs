@@ -223,8 +223,8 @@ impl Provider for GeminiProvider {
                         continue;
                     }
 
-                    if let Some(chunk) = Self::parse_sse_line(&line) {
-                        if let Some(candidates) = &chunk.candidates {
+                    if let Some(chunk) = Self::parse_sse_line(&line)
+                        && let Some(candidates) = &chunk.candidates {
                             for candidate in candidates {
                                 if let Some(content) = &candidate.content {
                                     for part in &content.parts {
@@ -243,7 +243,6 @@ impl Provider for GeminiProvider {
                                 }
                             }
                         }
-                    }
                 }
             }
 

@@ -110,11 +110,11 @@ async fn webhook_receive(
         for entry in entries {
             if let Some(changes) = entry.changes {
                 for change in changes {
-                    if let Some(value) = change.value {
-                        if let Some(messages) = value.messages {
+                    if let Some(value) = change.value
+                        && let Some(messages) = value.messages {
                             for msg in messages {
-                                if msg.msg_type == "text" {
-                                    if let Some(text) = msg.text {
+                                if msg.msg_type == "text"
+                                    && let Some(text) = msg.text {
                                         let message = Message::new(
                                             "whatsapp",
                                             &msg.from,
@@ -125,10 +125,8 @@ async fn webhook_receive(
                                             error!("Failed to forward WhatsApp message");
                                         }
                                     }
-                                }
                             }
                         }
-                    }
                 }
             }
         }

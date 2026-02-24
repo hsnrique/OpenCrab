@@ -10,6 +10,12 @@ pub struct HttpRequestTool {
     client: Client,
 }
 
+impl Default for HttpRequestTool {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl HttpRequestTool {
     pub fn new() -> Self {
         Self {

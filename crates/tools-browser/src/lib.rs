@@ -15,6 +15,12 @@ pub struct BrowserTool {
     browser: Arc<Mutex<Option<Arc<Browser>>>>,
 }
 
+impl Default for BrowserTool {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl BrowserTool {
     pub fn new() -> Self {
         Self {

@@ -6,6 +6,7 @@ use tracing::info;
 
 use opencrab_core::{Tool, ToolDef};
 
+#[derive(Default)]
 pub struct CodeRunnerTool;
 
 impl CodeRunnerTool {
