@@ -11,6 +11,8 @@ members = [
     "crates/channels/whatsapp",
     "crates/channels/discord",
     "crates/tools",
+    "crates/tools-browser",
+    "crates/plugin-wasm",
 ]
 
 [workspace.package]
@@ -33,6 +35,8 @@ uuid = { version = "1", features = ["v4"] }
 chrono = { version = "0.4", features = ["serde"] }
 toml = "0.8"
 rusqlite = { version = "0.32", features = ["bundled"] }
+futures = "0.3"
+futures-core = "0.3"
 
 opencrab-core = { path = "crates/core" }
 opencrab-memory = { path = "crates/memory" }
@@ -42,6 +46,10 @@ opencrab-provider-openai = { path = "crates/providers/openai" }
 opencrab-provider-anthropic = { path = "crates/providers/anthropic" }
 opencrab-channel-cli = { path = "crates/channels/cli" }
 opencrab-channel-telegram = { path = "crates/channels/telegram" }
+opencrab-channel-discord = { path = "crates/channels/discord" }
+opencrab-channel-whatsapp = { path = "crates/channels/whatsapp" }
+opencrab-tools-browser = { path = "crates/tools-browser" }
+opencrab-plugin-wasm = { path = "crates/plugin-wasm" }
 
 [package]
 name = "opencrab"
@@ -62,6 +70,10 @@ opencrab-provider-openai.workspace = true
 opencrab-provider-anthropic.workspace = true
 opencrab-channel-cli.workspace = true
 opencrab-channel-telegram.workspace = true
+opencrab-channel-discord.workspace = true
+opencrab-channel-whatsapp.workspace = true
+opencrab-tools-browser.workspace = true
+opencrab-plugin-wasm.workspace = true
 tokio.workspace = true
 serde.workspace = true
 serde_json.workspace = true

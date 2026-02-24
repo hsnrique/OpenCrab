@@ -60,15 +60,15 @@ You: list the rust files in my project
 |---------|--------|
 | **Streaming responses** | ✅ Real-time token output |
 | **Multi-provider** | ✅ Gemini, OpenAI, Anthropic |
-| **Tool calling** | ✅ Shell, Filesystem, URL Reader, HTTP |
+| **Tool calling** | ✅ Shell, Filesystem, URL, HTTP, Code Runner, System Info |
 | **Web Search** | ✅ Native Gemini Google Search grounding |
 | **CLI channel** | ✅ Interactive terminal |
 | **Telegram bot** | ✅ Full integration |
+| **Discord bot** | ✅ Serenity gateway |
+| **WhatsApp** | ✅ Webhook + Cloud API |
 | **Memory** | ✅ SQLite conversation persistence |
-| **Discord** | 🔧 Channel scaffolded |
-| **WhatsApp** | 🔧 Channel scaffolded |
-| **Browser automation** | 📋 Planned |
-| **WASM plugins** | 📋 Planned |
+| **Browser automation** | ✅ Headless Chrome via chromiumoxide |
+| **WASM plugins** | ✅ Wasmtime runtime, auto-load from plugins/ |
 
 ## Quick Start
 
@@ -146,6 +146,9 @@ web_search_enabled = true
 | `url_reader` | Fetch and extract text content from web pages |
 | `http_request` | Make HTTP requests (GET, POST, PUT, DELETE) to APIs |
 | `web_search` | Native Google Search grounding via Gemini (no extra API key) |
+| `code_runner` | Execute Python, Node.js, or Bash code snippets |
+| `system_info` | Get OS details, processes, disk, network, and env info |
+| `browser` | Headless Chrome: navigate, screenshot, extract text, click, type, eval JS |
 
 ## Project Structure
 
@@ -163,8 +166,11 @@ OpenCrab/
 │   │   ├── telegram/              # Telegram bot
 │   │   ├── discord/               # Discord bot
 │   │   └── whatsapp/              # WhatsApp webhook
-│   ├── tools/                     # Shell, FS, Web, HTTP
+│   ├── tools/                     # Shell, FS, URL, HTTP, Code Runner, System Info
+│   ├── tools-browser/             # Headless Chrome automation
+│   ├── plugin-wasm/               # WASM plugin runtime (wasmtime)
 │   └── memory/                    # SQLite storage
+├── plugins/                       # WASM plugins auto-loaded here
 └── config.toml                    # Runtime configuration
 ```
 

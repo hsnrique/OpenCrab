@@ -10,7 +10,7 @@ use opencrab_core::config::Config;
 use opencrab_core::{Channel, Provider};
 
 use opencrab_memory::SqliteMemory;
-use opencrab_tools::{FileSystemTool, HttpRequestTool, ShellTool, UrlReaderTool};
+use opencrab_tools::{CodeRunnerTool, FileSystemTool, HttpRequestTool, ShellTool, SystemInfoTool, UrlReaderTool};
 
 fn create_provider(config: &Config) -> Result<Arc<dyn Provider>> {
     let provider_name = &config.agent.default_provider;
@@ -47,6 +47,20 @@ fn create_channels(config: &Config) -> Vec<Arc<dyn Channel>> {
     if let Some(tg) = &config.channels.telegram {
         if tg.enabled {
             channels.push(Arc::new(opencrab_channel_telegram::TelegramChannel::new(&tg.bot_token)));
+        }
+    }
+
+    if let Some(dc) = &config.channels.discord {
+        if dc.enabled {
+            channels.push(Arc::new(opencrab_channel_discord::DiscordChannel::new(&dc.bot_token)));
+        }
+    }
+
+    if let Some(wa) = &config.channels.whatsapp {
+        if wa.enabled {
+            channels.push(Arc::new(opencrab_channel_whatsapp::WhatsAppChannel::new(
+                &wa.phone_number_id, &wa.access_token, &wa.verify_token, wa.webhook_port,
+            )));
         }
     }
 
@@ -88,6 +102,23 @@ async fn main() -> Result<()> {
 
     if config.tools.http_enabled {
         agent.register_tool(Arc::new(HttpRequestTool::new()));
+    }
+
+    if config.tools.code_runner_enabled {
+        agent.register_tool(Arc::new(CodeRunnerTool::new()));
+    }
+
+    if config.tools.system_info_enabled {
+        agent.register_tool(Arc::new(SystemInfoTool::new()));
+    }
+
+    if config.tools.browser_enabled {
+        agent.register_tool(Arc::new(opencrab_tools_browser::BrowserTool::new()));
+    }
+
+    let plugins_dir = std::path::Path::new("./plugins");
+    for plugin in opencrab_plugin_wasm::load_plugins_from_dir(plugins_dir) {
+        agent.register_tool(Arc::new(plugin));
     }
 
     let agent = Arc::new(agent);

@@ -99,6 +99,10 @@ pub struct ToolsConfig {
     pub url_reader_enabled: bool,
     #[serde(default = "default_true")]
     pub http_enabled: bool,
+    #[serde(default = "default_true")]
+    pub code_runner_enabled: bool,
+    #[serde(default = "default_true")]
+    pub system_info_enabled: bool,
     #[serde(default)]
     pub browser_enabled: bool,
     #[serde(default)]
@@ -146,6 +150,8 @@ impl Config {
                 web_search_enabled: true,
                 url_reader_enabled: true,
                 http_enabled: true,
+                code_runner_enabled: true,
+                system_info_enabled: true,
                 browser_enabled: false,
                 filesystem_root: None,
                 shell_allowed_commands: vec![],

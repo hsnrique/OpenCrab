@@ -1,5 +1,5 @@
 [package]
-name = "opencrab-channel-whatsapp"
+name = "opencrab-tools-browser"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -7,10 +7,10 @@ authors.workspace = true
 [dependencies]
 opencrab-core.workspace = true
 tokio.workspace = true
-serde = { workspace = true, features = ["derive"] }
+serde.workspace = true
 serde_json.workspace = true
-reqwest.workspace = true
 anyhow.workspace = true
 tracing.workspace = true
 async-trait.workspace = true
-axum = "0.7"
+chromiumoxide = "0.9"
+futures.workspace = true

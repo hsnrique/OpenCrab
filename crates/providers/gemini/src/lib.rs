@@ -111,24 +111,18 @@ impl GeminiProvider {
     }
 
     fn build_tools(&self, tools: &[ToolDef]) -> Option<serde_json::Value> {
-        let mut tool_entries = Vec::new();
-
         if !tools.is_empty() {
             let decls: Vec<_> = tools.iter()
                 .map(|t| json!({ "name": t.name, "description": t.description, "parameters": t.parameters }))
                 .collect();
-            tool_entries.push(json!({ "functionDeclarations": decls }));
+            return Some(json!([{ "functionDeclarations": decls }]));
         }
 
         if self.search_enabled {
-            tool_entries.push(json!({ "google_search": {} }));
+            return Some(json!([{ "google_search": {} }]));
         }
 
-        if tool_entries.is_empty() {
-            None
-        } else {
-            Some(json!(tool_entries))
-        }
+        None
     }
 
     fn extract_system_instruction(&self, messages: &[ChatMessage]) -> Option<String> {
