@@ -16,6 +16,7 @@ pub struct GeminiProvider {
     api_key: String,
     model: String,
     client: Client,
+    search_enabled: bool,
 }
 
 fn sanitize_tool_output(output: &str) -> String {
@@ -38,7 +39,13 @@ impl GeminiProvider {
             api_key: api_key.to_string(),
             model: model.to_string(),
             client: Client::new(),
+            search_enabled: false,
         }
+    }
+
+    pub fn with_search(mut self, enabled: bool) -> Self {
+        self.search_enabled = enabled;
+        self
     }
 
     fn build_request_body(&self, messages: &[ChatMessage], tools: &[ToolDef]) -> serde_json::Value {
@@ -104,13 +111,24 @@ impl GeminiProvider {
     }
 
     fn build_tools(&self, tools: &[ToolDef]) -> Option<serde_json::Value> {
-        if tools.is_empty() {
-            return None;
+        let mut tool_entries = Vec::new();
+
+        if !tools.is_empty() {
+            let decls: Vec<_> = tools.iter()
+                .map(|t| json!({ "name": t.name, "description": t.description, "parameters": t.parameters }))
+                .collect();
+            tool_entries.push(json!({ "functionDeclarations": decls }));
         }
-        let decls: Vec<_> = tools.iter()
-            .map(|t| json!({ "name": t.name, "description": t.description, "parameters": t.parameters }))
-            .collect();
-        Some(json!([{ "functionDeclarations": decls }]))
+
+        if self.search_enabled {
+            tool_entries.push(json!({ "google_search": {} }));
+        }
+
+        if tool_entries.is_empty() {
+            None
+        } else {
+            Some(json!(tool_entries))
+        }
     }
 
     fn extract_system_instruction(&self, messages: &[ChatMessage]) -> Option<String> {

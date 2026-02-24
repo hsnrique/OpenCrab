@@ -10,7 +10,7 @@ use opencrab_core::config::Config;
 use opencrab_core::{Channel, Provider};
 
 use opencrab_memory::SqliteMemory;
-use opencrab_tools::{FileSystemTool, ShellTool};
+use opencrab_tools::{FileSystemTool, HttpRequestTool, ShellTool, UrlReaderTool};
 
 fn create_provider(config: &Config) -> Result<Arc<dyn Provider>> {
     let provider_name = &config.agent.default_provider;
@@ -18,7 +18,10 @@ fn create_provider(config: &Config) -> Result<Arc<dyn Provider>> {
     match provider_name.as_str() {
         "gemini" => {
             let entry = config.providers.gemini.as_ref().context("Gemini provider not configured")?;
-            Ok(Arc::new(opencrab_provider_gemini::GeminiProvider::new(&entry.api_key, &entry.model)))
+            Ok(Arc::new(
+                opencrab_provider_gemini::GeminiProvider::new(&entry.api_key, &entry.model)
+                    .with_search(config.tools.web_search_enabled)
+            ))
         }
         "openai" => {
             let entry = config.providers.openai.as_ref().context("OpenAI provider not configured")?;
@@ -77,6 +80,14 @@ async fn main() -> Result<()> {
 
     if config.tools.filesystem_enabled {
         agent.register_tool(Arc::new(FileSystemTool::new(config.tools.filesystem_root.clone())));
+    }
+
+    if config.tools.url_reader_enabled {
+        agent.register_tool(Arc::new(UrlReaderTool::new()));
+    }
+
+    if config.tools.http_enabled {
+        agent.register_tool(Arc::new(HttpRequestTool::new()));
     }
 
     let agent = Arc::new(agent);

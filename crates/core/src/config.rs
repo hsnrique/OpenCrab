@@ -93,6 +93,12 @@ pub struct ToolsConfig {
     pub shell_enabled: bool,
     #[serde(default = "default_true")]
     pub filesystem_enabled: bool,
+    #[serde(default = "default_true")]
+    pub web_search_enabled: bool,
+    #[serde(default = "default_true")]
+    pub url_reader_enabled: bool,
+    #[serde(default = "default_true")]
+    pub http_enabled: bool,
     #[serde(default)]
     pub browser_enabled: bool,
     #[serde(default)]
@@ -137,6 +143,9 @@ impl Config {
             tools: ToolsConfig {
                 shell_enabled: true,
                 filesystem_enabled: true,
+                web_search_enabled: true,
+                url_reader_enabled: true,
+                http_enabled: true,
                 browser_enabled: false,
                 filesystem_root: None,
                 shell_allowed_commands: vec![],
@@ -150,10 +159,11 @@ const DEFAULT_SYSTEM_PROMPT: &str = r#"You are OpenCrab, a personal AI assistant
 You have access to tools that let you interact with the user's system:
 - Execute shell commands
 - Read and write files
-- Browse the web
+- Search the web
+- Read content from URLs
+- Make HTTP API requests
 
 When the user asks you to do something, use the appropriate tools to actually perform the action.
 Be concise, helpful, and proactive. If a task requires multiple steps, execute them in sequence.
 Always confirm what you did after completing an action.
-
 Remember context from previous conversations to provide a personalized experience."#;
