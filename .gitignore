@@ -1,4 +1,7 @@
 /target
 /data
-*.db
 config.toml
+*.db
+*.db-journal
+plugins/*.wasm
+.DS_Store
