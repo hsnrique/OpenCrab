@@ -149,8 +149,8 @@ impl Provider for OpenAIProvider {
                         break;
                     }
 
-                    if let Some(chunk) = Self::parse_sse_line(&line) {
-                        if let Some(choices) = &chunk.choices {
+                    if let Some(chunk) = Self::parse_sse_line(&line)
+                        && let Some(choices) = &chunk.choices {
                             for choice in choices {
                                 if let Some(delta) = &choice.delta {
                                     if let Some(content) = &delta.content {
@@ -165,21 +165,19 @@ impl Provider for OpenAIProvider {
                                                 let _ = tx.send(StreamChunk::ToolCallStart { id: id.clone(), name: name.clone() });
                                                 (id, name, String::new())
                                             });
-                                            if let Some(f) = &tc.function {
-                                                if let Some(args) = &f.arguments {
+                                            if let Some(f) = &tc.function
+                                                && let Some(args) = &f.arguments {
                                                     entry.2.push_str(args);
                                                     let _ = tx.send(StreamChunk::ToolCallDelta {
                                                         id: entry.0.clone(),
                                                         arguments_delta: args.clone(),
                                                     });
                                                 }
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
                 }
             }
 

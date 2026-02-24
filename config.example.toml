@@ -16,7 +16,7 @@ model = "gemini-3-flash-preview"
 
 # [providers.openai]
 # api_key = "YOUR_OPENAI_API_KEY"
-# model = "gpt-4o"
+# model = "gpt-5-mini"
 
 # [providers.anthropic]
 # api_key = "YOUR_ANTHROPIC_API_KEY"

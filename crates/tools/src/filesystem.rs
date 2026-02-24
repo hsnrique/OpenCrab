@@ -15,16 +15,19 @@ impl FileSystemTool {
     pub fn new(root: Option<String>) -> Self {
         let root = root
             .map(|r| {
-                if r.starts_with("~/") {
-                    let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
-                    PathBuf::from(home).join(&r[2..])
+                if let Some(stripped) = r.strip_prefix("~/") {
+                    let home = std::env::var_os("HOME")
+                        .map(PathBuf::from)
+                        .unwrap_or_else(|| PathBuf::from("/tmp"));
+                    home.join(stripped)
                 } else {
                     PathBuf::from(r)
                 }
             })
             .unwrap_or_else(|| {
-                let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
-                PathBuf::from(home)
+                std::env::var_os("HOME")
+                    .map(PathBuf::from)
+                    .unwrap_or_else(|| PathBuf::from("/tmp"))
             });
 
         Self { root }

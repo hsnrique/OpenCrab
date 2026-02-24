@@ -38,31 +38,27 @@ fn create_provider(config: &Config) -> Result<Arc<dyn Provider>> {
 fn create_channels(config: &Config) -> Vec<Arc<dyn Channel>> {
     let mut channels: Vec<Arc<dyn Channel>> = Vec::new();
 
-    if let Some(cli) = &config.channels.cli {
-        if cli.enabled {
+    if let Some(cli) = &config.channels.cli
+        && cli.enabled {
             channels.push(Arc::new(opencrab_channel_cli::CliChannel::new()));
         }
-    }
 
-    if let Some(tg) = &config.channels.telegram {
-        if tg.enabled {
+    if let Some(tg) = &config.channels.telegram
+        && tg.enabled {
             channels.push(Arc::new(opencrab_channel_telegram::TelegramChannel::new(&tg.bot_token)));
         }
-    }
 
-    if let Some(dc) = &config.channels.discord {
-        if dc.enabled {
+    if let Some(dc) = &config.channels.discord
+        && dc.enabled {
             channels.push(Arc::new(opencrab_channel_discord::DiscordChannel::new(&dc.bot_token)));
         }
-    }
 
-    if let Some(wa) = &config.channels.whatsapp {
-        if wa.enabled {
+    if let Some(wa) = &config.channels.whatsapp
+        && wa.enabled {
             channels.push(Arc::new(opencrab_channel_whatsapp::WhatsAppChannel::new(
                 &wa.phone_number_id, &wa.access_token, &wa.verify_token, wa.webhook_port,
             )));
         }
-    }
 
     channels
 }

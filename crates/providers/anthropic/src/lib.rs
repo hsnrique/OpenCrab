@@ -152,46 +152,42 @@ impl Provider for AnthropicProvider {
                     }
 
                     if let Some(event) = Self::parse_sse_line(&line) {
-                        match event.event_type.as_deref().unwrap_or("") {
-                            _ => {
-                                if let Some(delta) = &event.delta {
-                                    if let Some(text) = &delta.text {
-                                        let _ = tx.send(StreamChunk::Delta(text.clone()));
-                                    }
-                                    if let Some(args) = &delta.partial_json {
-                                        current_tool_args.push_str(args);
-                                        let _ = tx.send(StreamChunk::ToolCallDelta {
-                                            id: current_tool_id.clone(),
-                                            arguments_delta: args.clone(),
-                                        });
-                                    }
-                                }
-
-                                if let Some(cb) = &event.content_block {
-                                    if cb.block_type.as_deref() == Some("tool_use") {
-                                        current_tool_id = cb.id.clone().unwrap_or_default();
-                                        current_tool_name = cb.name.clone().unwrap_or_default();
-                                        current_tool_args.clear();
-                                        let _ = tx.send(StreamChunk::ToolCallStart {
-                                            id: current_tool_id.clone(),
-                                            name: current_tool_name.clone(),
-                                        });
-                                    }
-                                }
-
-                                if event.event_type.as_deref() == Some("content_block_stop") && !current_tool_id.is_empty() {
-                                    let arguments = serde_json::from_str(&current_tool_args).unwrap_or(json!({}));
-                                    let _ = tx.send(StreamChunk::ToolCallEnd {
-                                        id: current_tool_id.clone(),
-                                        name: current_tool_name.clone(),
-                                        arguments,
-                                        thought_signature: None,
-                                    });
-                                    current_tool_id.clear();
-                                    current_tool_name.clear();
-                                    current_tool_args.clear();
-                                }
+                        if let Some(delta) = &event.delta {
+                            if let Some(text) = &delta.text {
+                                let _ = tx.send(StreamChunk::Delta(text.clone()));
                             }
+                            if let Some(args) = &delta.partial_json {
+                                current_tool_args.push_str(args);
+                                let _ = tx.send(StreamChunk::ToolCallDelta {
+                                    id: current_tool_id.clone(),
+                                    arguments_delta: args.clone(),
+                                });
+                            }
+                        }
+
+                        if let Some(cb) = &event.content_block
+                            && cb.block_type.as_deref() == Some("tool_use")
+                        {
+                            current_tool_id = cb.id.clone().unwrap_or_default();
+                            current_tool_name = cb.name.clone().unwrap_or_default();
+                            current_tool_args.clear();
+                            let _ = tx.send(StreamChunk::ToolCallStart {
+                                id: current_tool_id.clone(),
+                                name: current_tool_name.clone(),
+                            });
+                        }
+
+                        if event.event_type.as_deref() == Some("content_block_stop") && !current_tool_id.is_empty() {
+                            let arguments = serde_json::from_str(&current_tool_args).unwrap_or(json!({}));
+                            let _ = tx.send(StreamChunk::ToolCallEnd {
+                                id: current_tool_id.clone(),
+                                name: current_tool_name.clone(),
+                                arguments,
+                                thought_signature: None,
+                            });
+                            current_tool_id.clear();
+                            current_tool_name.clear();
+                            current_tool_args.clear();
                         }
                     }
                 }
