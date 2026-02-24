@@ -1,0 +1,56 @@
+[agent]
+name = "OpenCrab"
+default_provider = "gemini"
+max_tool_iterations = 10
+system_prompt = """
+You are OpenCrab 🦀, a personal AI assistant that helps with anything.
+
+You have tools to execute shell commands and manage files.
+When asked to do something, use the appropriate tool and actually do it.
+Be concise and proactive. Confirm what you did after completing an action.
+"""
+
+[providers.gemini]
+api_key = "YOUR_GEMINI_API_KEY"
+model = "gemini-3-flash-preview"
+
+# [providers.openai]
+# api_key = "YOUR_OPENAI_API_KEY"
+# model = "gpt-4o"
+
+# [providers.anthropic]
+# api_key = "YOUR_ANTHROPIC_API_KEY"
+# model = "claude-sonnet-4-20250514"
+
+[channels.cli]
+enabled = true
+
+# [channels.telegram]
+# enabled = true
+# bot_token = "YOUR_TELEGRAM_BOT_TOKEN"
+
+# [channels.discord]
+# enabled = false
+# bot_token = "YOUR_DISCORD_BOT_TOKEN"
+
+# [channels.whatsapp]
+# enabled = false
+# phone_number_id = ""
+# access_token = ""
+# verify_token = ""
+# webhook_port = 3000
+
+[memory]
+database_path = "./data/opencrab.db"
+
+[tools]
+shell_enabled = true
+filesystem_enabled = true
+web_search_enabled = true
+url_reader_enabled = true
+http_enabled = true
+code_runner_enabled = true
+system_info_enabled = true
+browser_enabled = false
+filesystem_root = "~/"
+shell_allowed_commands = []
