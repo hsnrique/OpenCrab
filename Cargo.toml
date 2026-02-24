@@ -1,0 +1,72 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/memory",
+    "crates/providers/gemini",
+    "crates/providers/openai",
+    "crates/providers/anthropic",
+    "crates/channels/cli",
+    "crates/channels/telegram",
+    "crates/channels/whatsapp",
+    "crates/channels/discord",
+    "crates/tools",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+authors = ["Henrique"]
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json", "stream"] }
+anyhow = "1"
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+async-trait = "0.1"
+uuid = { version = "1", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+toml = "0.8"
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+opencrab-core = { path = "crates/core" }
+opencrab-memory = { path = "crates/memory" }
+opencrab-tools = { path = "crates/tools" }
+opencrab-provider-gemini = { path = "crates/providers/gemini" }
+opencrab-provider-openai = { path = "crates/providers/openai" }
+opencrab-provider-anthropic = { path = "crates/providers/anthropic" }
+opencrab-channel-cli = { path = "crates/channels/cli" }
+opencrab-channel-telegram = { path = "crates/channels/telegram" }
+
+[package]
+name = "opencrab"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "opencrab"
+path = "src/main.rs"
+
+[dependencies]
+opencrab-core.workspace = true
+opencrab-memory.workspace = true
+opencrab-tools.workspace = true
+opencrab-provider-gemini.workspace = true
+opencrab-provider-openai.workspace = true
+opencrab-provider-anthropic.workspace = true
+opencrab-channel-cli.workspace = true
+opencrab-channel-telegram.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+toml.workspace = true
+

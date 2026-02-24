@@ -1,0 +1,15 @@
+[package]
+name = "opencrab-channel-telegram"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+opencrab-core.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+async-trait.workspace = true
+teloxide = { version = "0.13", features = ["macros"] }
