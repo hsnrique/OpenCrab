@@ -185,7 +185,7 @@ When using the CLI channel:
 
 ## Support
 
-If you find Synapse useful, consider supporting the project:
+If you find this project useful, consider supporting the project:
 
 | | Link |
 |---|---|
