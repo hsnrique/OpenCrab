@@ -183,6 +183,15 @@ When using the CLI channel:
 | `/quit` or `/exit` | Exit OpenCrab |
 | `/clear` | Clear conversation history |
 
+## Support
+
+If you find Synapse useful, consider supporting the project:
+
+| | Link |
+|---|---|
+| ☕ **Buy Me a Coffee** (US/EU) | [buymeacoffee.com/hsnrique](https://buymeacoffee.com/hsnrique) |
+| 💜 **Pix** (BR) | [livepix.gg/hsnrique](https://livepix.gg/hsnrique) |
+
 ## License
 
 MIT
